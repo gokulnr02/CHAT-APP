@@ -1,0 +1,212 @@
+.navbar {
+  width: 1250px;
+  height: 50px;
+  background-color: #69e0bd;
+}
+
+.Chatcontainer {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.contacts {
+  width: 250px;
+  background-color: #fafafa;
+  height: 100vh;
+}
+
+.chatbox {
+  width: 1000px;
+  height: 100vh;
+background-color: azure;
+}
+
+.contacts {
+  border-right: 1px solid #ddd;
+}
+
+.induvidualPerson {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.contactIcon {
+  width: 40px;
+  height: 40px;
+  border: 50%;
+}
+
+.messageRecievedTime {
+  opacity: 0.6;
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.contactName {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  position: relative;
+}
+
+.contactName:hover::after {
+  content: attr(data-name); /* Use the data-name attribute as the tooltip content */
+  position: absolute;
+  top: -100%; /* Position below the element */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin-top: 5px; /* Add a small gap */
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.contactName::after {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+.LastMessage {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  opacity: 0.6;
+}
+
+.badgeCount {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background-color: #69e0bd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+.contactDescription {
+  width: 100px;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.coloum {
+  flex-direction: column;
+}
+
+.chatBox{
+  height: 83vh;
+}
+
+.sendSomething{
+  width: 1000px;
+  height: 100%;
+  position: relative;
+  border: 1px solid #ddd;
+}
+
+.textbox{
+  width: 1000px;
+  height: 60px;
+  font-size: 25px;
+  position: absolute;
+  padding-right: 100px;
+  padding-left: 20px;
+  border: 1px solid #ddd;
+  border-left: none ;
+  border-top: none ;
+  outline: none;
+}
+
+.sendArrow{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.navbar{
+  position: relative;
+}
+.menuIcon{
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.settings{
+  background-color: #fff;
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  z-index: 1;
+  visibility: hidden;
+}
+.induvidualIcon{
+  height: 30px;
+  width: 100px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-bottom: 0.5px solid #ddd;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.selectdPerson{
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  padding-left: 20px;
+  border-bottom: 1px solid #ddd;
+  visibility: hidden;
+}
+
+.settingIcon{
+  width: 20px;
+  height: 20px;
+}
+
+.gap10{
+  gap: 5px;
+  padding: 5PX;
+ cursor: pointer;
+}
