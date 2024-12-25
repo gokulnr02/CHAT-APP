@@ -13,7 +13,7 @@ server.use(express.urlencoded({extended:true}))
 server.use(express.json());
 server.use('/',routes);
 
-Mongoose.connect('mongodb+srv://gokulnr02:qMAxfL1aQsp8y1q2@cluster0.b8rsj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0').then(()=>{console.log(`DB connected Successfully`)})
+Mongoose.connect(process.env.Mango_URI).then(()=>{console.log(`DB connected Successfully`)})
 
 server.listen(port,()=>{
     console.log(`Server run successfully in ${port}`)

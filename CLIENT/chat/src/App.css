@@ -46,6 +46,19 @@ background-color: azure;
   height: 40px;
   border: 50%;
 }
+.contactIcon1 {
+  width: 30px;
+  height: 30px;
+  border: 50%;
+}
+.contactIcon2{
+  width: 40px;
+  height: 40px;
+  border: 50%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
 
 .messageRecievedTime {
   opacity: 0.6;
@@ -59,7 +72,12 @@ background-color: azure;
   line-height: 18px;
   position: relative;
 }
-
+.contactName1 {
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 18px;
+  position: relative;
+}
 .contactName:hover::after {
   content: attr(data-name); /* Use the data-name attribute as the tooltip content */
   position: absolute;
@@ -209,4 +227,37 @@ background-color: azure;
   gap: 5px;
   padding: 5PX;
  cursor: pointer;
+}
+
+.chatMainContainer{
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.addUserContainer{
+  position: absolute;
+  top: 20px;
+  right: 20px ;
+  z-index: 2;
+  background-color: #fff;
+  padding: 0 10px;
+  height: 80vh;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  visibility: hidden;
+}
+
+.checkboxDesign{
+  width: 30px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.add-btn{
+  height: 40px;
+  padding: 5px;
+  display: flex;
+  justify-content: end;
 }

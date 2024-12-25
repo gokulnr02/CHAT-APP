@@ -2,6 +2,7 @@ const { UserRegisterModel } = require('../MODEL/userRegisterModel');
 const bcryptjs = require('bcryptjs');
 const validators = require('validator');
 const jwt = require('jsonwebtoken');
+const { addedUsers } = require('../MODEL/addUser')
 
 exports.userSave = async (request, response) => {
     try {
@@ -11,6 +12,21 @@ exports.userSave = async (request, response) => {
         if (!validators.isEmail(email)) return response.status(400).json({ "status": 400, "message": "Invalid EmailId" });
         await UserRegisterModel.create({ username, email, password }).then((res) => {
             return response.status(200).json({ "status": 200, "message": "Saved Successfully", "data": res })
+        })
+    } catch (err) {
+        return response.status(400).json({ "status": 400, "message": err.message })
+    }
+}
+
+exports.usersList = async (request, response) => {
+    try {
+        const primaryUser = request.params.id
+        await UserRegisterModel.find({ _id: { $ne: primaryUser } }).then((res) => {
+            if (res.length > 0) {
+                return response.status(200).json({ "status": 200, "message": "Success", "data": res })
+            } else {
+                return response.status(200).json({ "status": 200, "message": "No Records", "data": res })
+            }
         })
     } catch (err) {
         return response.status(400).json({ "status": 400, "message": err.message })
@@ -35,5 +51,29 @@ exports.login = async (request, response) => {
         })
     } catch (err) {
         return response.status(400).json({ "status": 400, "message": err.message })
+    }
+}
+
+
+exports.Adduser = async (request, response) => {
+    try {
+        const  list  = request.body;
+        console.log(list,'list')
+        let result;
+       await list.map(async (x) => {
+            const { primaryUser, selectdUser } = x
+            console.log(x,'xxx')
+            const ifExisiting = await addedUsers.findOne({
+                members: { $all: [primaryUser, selectdUser] }
+            })
+            if (ifExisiting.length == 0) {
+                result = await addedUsers.create({ members: [primaryUser, selectdUser] });
+                console.log(result,'savedRes')
+            }
+        })
+
+        return response.status(200).json({ "status": 200, "message": "Saved Successfully", "data": { result } })
+    } catch (err) {
+
     }
 }
