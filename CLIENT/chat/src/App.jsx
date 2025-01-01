@@ -1,6 +1,6 @@
 
 import './App.css'
-import Login from './PAGES/Login';
+import Login1 from './PAGES/login1';
 import Chat from './PAGES/Chat';
 import { useState, createContext } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -17,7 +17,7 @@ const [acitiveContact,setActivecontact]=useState({})
       }}>
         <Router>
           <Routes>
-            <Route path='/login' element={<Login />} />
+            <Route path='/login' element={<Login1 />} />
             <Route path='/inbox' element={<Chat />} />
           </Routes>
         </Router>

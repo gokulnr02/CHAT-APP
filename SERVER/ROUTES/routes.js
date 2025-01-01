@@ -8,5 +8,8 @@ route.post('/createUser',userRegister.userSave);
 route.get('/users/:id',userRegister.usersList);
 route.post('/login',userRegister.login);
 route.post('/Adduser',userRegister.Adduser)
+route.post('/fav',userRegister.Fav);
+route.post('/sendMessage',userRegister.sendMessage)
+route.get('/messages/:chatId',userRegister.Messages)
 
 module.exports =route;

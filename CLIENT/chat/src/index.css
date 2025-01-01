@@ -1,5 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Forum&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Forum&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
 *{
   font-family: "DM Sans", serif;
   margin: 0;
@@ -25,7 +27,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('./assets/dariusz-sankowski-3OiYMgDKJ6k-unsplash.jpg');
+  background-image: url('./assets/pexels-pok-rie-33563-2049422.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -44,13 +46,33 @@ body{
 
 }
 
+.btn-sign{
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+}
+
 .inputDiv{
-  width: 320px;
+  width: 380px;
   height: 40px;
-  border: 0.5px solid #443f3f;
   border-radius: 5px;
   padding: 0 10px;
-  /* background-color: #ddd; */
+  background-color: rgb(115 249 155 / 30%);
+  display: flex;
+  flex-direction: row;
+}
+.textFieldIcon{
+  width: 30px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .inputDiv1{
   width: 320px;
@@ -65,6 +87,9 @@ body{
   height: 100%;
   width: 100%;
   font-weight: 500;
+}
+.textField:focus{
+  background-color: transparent;
 }
 .header{
   font-size: 30px;

@@ -14,6 +14,7 @@ import CommonAPI_POST from '../CommonAPI';
 
 function Chat() {
     const cContext = useContext(chatContext);
+    const chatDetails = cContext.acitiveContactS
     const chatboxRef = useRef();
     const settingRef = useRef();
     const [contactList, setUsersList] = useState([]);
@@ -31,17 +32,17 @@ function Chat() {
     }
 
     const handleAddUser = async () => {
-        fetchUserList('676305f83b36bec7bd054a20')
+        fetchUserList(localStorage.getItem('uID'))
         AddUserRef.current.style.visibility = AddUserRef.current.style.visibility == 'visible' ? 'hidden' : 'visible'
     }
     const hanldeSelectedUser = async (user) => {
-        setSelectedUser(prv => ([...prv, { primaryUser: "676305f83b36bec7bd054a20", selectdUser: user }]))
+        setSelectedUser(prv => ([...prv, { primaryUser: localStorage.getItem('uID'), selectdUser: user }]))
     }
 
-    const submitAddUser= useCallback(async()=>{
-         const url = `http://127.0.0.1:5002/Adduser`
-       await CommonAPI_POST({url, params:SelectedUser})
-    },[SelectedUser])
+    const submitAddUser = useCallback(async () => {
+        const url = `http://127.0.0.1:5002/Adduser`
+        await CommonAPI_POST({ url, params: SelectedUser })
+    }, [SelectedUser])
 
     return (
         <div className='chatMainContainer'>
@@ -58,7 +59,7 @@ function Chat() {
                         <img className='settingIcon' src={adduser}></img>
                         <span>Add Friend</span>
                     </div>
-                    <div className='induvidualIcon gap10'>
+                    <div className='induvidualIcon gap10' onClick={() => { window.location.href = '/login' }}>
                         <img className='settingIcon' src={logout}></img>
                         <span>Logout</span>
                     </div>

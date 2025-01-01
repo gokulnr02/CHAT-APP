@@ -4,6 +4,125 @@
   background-color: #69e0bd;
 }
 
+.loginContainer{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+}
+.headerText{
+  color:  rgb(62,145,117 ) ;
+}
+.leftSideContainer{
+  width: 25%;
+  background-color: rgb(62,145,117 ) ;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  gap: 50px;
+}
+.RightSideContainer{
+  width: 75%;
+  height: 100vh;
+  z-index: 2;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.centerBox{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.loginleft{
+  width: 300px;
+  gap: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  position: relative;
+}
+
+.loginBTN{
+  border: 1px solid #fff;
+  border-radius: 15px;
+  width: 125px;
+  height: 33px;
+  z-index: 1;
+}
+
+.loginBTN1{
+  border-radius: 15px;
+  width: 125px;
+  height: 33px;
+  z-index: 1;
+  background-color:rgb(62,145,117 ) ;
+}
+
+.shape{
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background-color: #69e0bd;
+  height: 30px;
+  width: 35px;
+  opacity: 0.5;
+  rotate: 39deg;
+  position: absolute;
+  top: -60%;
+  right: -15px;
+}
+
+.circleClip{
+  clip-path: circle(50% at 50% 50%);
+  background-color: #69e0bd;
+  height: 150px;
+  width: 150px;
+  opacity: 0.5;
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+}
+.triangleShape{
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background-color: #69e0bd;
+  height: 80px;
+  width: 80px;
+  opacity: 0.5;
+  rotate: 100deg;
+  position: absolute;
+  top: -100px;
+  right: -50px;
+}
+.shape-Btn{
+  position: relative;
+}
+.squarShape{
+  clip-path: inset(5% 20% 15% 10%);
+  background-color: #69e0bd;
+  height: 80px;
+  width: 80px;
+  opacity: 0.5;
+  rotate: 110deg;
+  position: absolute;
+  top: -30px;
+  left: -25px;
+}
+
 .Chatcontainer {
   width: 100%;
   height: 100vh;
@@ -13,7 +132,9 @@
   justify-content: center;
   align-items: center;
 }
-
+.txtColor{
+  color: #69e0bd;
+}
 .contacts {
   width: 250px;
   background-color: #fafafa;
@@ -32,7 +153,7 @@ background-color: azure;
 
 .induvidualPerson {
   width: 100%;
-  height: 50px;
+  height: 45px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -42,14 +163,14 @@ background-color: azure;
 }
 
 .contactIcon {
-  width: 40px;
-  height: 40px;
-  border: 50%;
+  width: 35px;
+  height: 35px;
+
 }
 .contactIcon1 {
   width: 30px;
   height: 30px;
-  border: 50%;
+
 }
 .contactIcon2{
   width: 40px;
@@ -68,7 +189,7 @@ background-color: azure;
 
 .contactName {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 18px;
   position: relative;
 }
@@ -106,7 +227,7 @@ background-color: azure;
 
 .LastMessage {
   font-weight: 500;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 18px;
   opacity: 0.6;
 }
@@ -260,4 +381,10 @@ background-color: azure;
   padding: 5px;
   display: flex;
   justify-content: end;
+}
+
+.linkHighlight{
+  color: rgb(79, 128, 234);
+  font-weight: 600;
+  cursor: pointer;
 }

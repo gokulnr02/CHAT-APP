@@ -6,6 +6,7 @@ import CommonAPI_POST from '../CommonAPI';
 
 function Login() {
     const [userDetails, setUserDetails] = useState({});
+    const [ViewSignUp,setViewSignUp]=useState(false)
 
     const handleChange = (e) => {
         setUserDetails((prev) => ({
@@ -27,7 +28,7 @@ function Login() {
 
     return (
         <div className="parent">
-            <div className="container" style={{ display: 'none' }}>
+           { !ViewSignUp && <div className="container">
                 <div>
                     <h1 className="header">Sign in to Your Account</h1>
                 </div>
@@ -78,11 +79,11 @@ function Login() {
                 </div>
 
                 <div className="defaultFont" style={{ marginTop: '25px' }}>
-                    <p>Don't have an account? Sign Up</p>
+                    <p >Don't have an account? <span className='linkHighlight' onClick={()=>setViewSignUp(true)}>Sign Up</span></p>
                 </div>
-            </div>
+            </div>}
 
-            <div className="container">
+            { ViewSignUp && <div className="container">
                 <div>
                     <h1 className="header">Sign up for free</h1>
                 </div>
@@ -143,9 +144,9 @@ function Login() {
                 </div>
 
                 <div className="defaultFont" style={{ marginTop: '25px' }}>
-                    <p>Already have an account? Sign in</p>
+                    <p>Already have an account?<span className='linkHighlight' onClick={()=>setViewSignUp(false)}> Sign in</span></p>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }
