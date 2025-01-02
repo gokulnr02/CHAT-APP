@@ -6,6 +6,7 @@ const userRegister = require('../CONTROLLERS/userRegistery')
 
 route.post('/createUser',userRegister.userSave);
 route.get('/users/:id',userRegister.usersList);
+route.get('/userDetails/:id',userRegister.userDetails)
 route.post('/login',userRegister.login);
 route.post('/Adduser',userRegister.Adduser)
 route.post('/fav',userRegister.Fav);

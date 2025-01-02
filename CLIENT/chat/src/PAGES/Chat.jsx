@@ -10,16 +10,18 @@ import user from '../assets/user.png';
 import logout from '../assets/logout.png';
 import CommonAPI_GET from '../PAGES/CommonAPI_GET';
 import CommonAPI_POST from '../CommonAPI';
+import { FaRegUser } from "react-icons/fa";
 
 
 function Chat() {
     const cContext = useContext(chatContext);
-    const chatDetails = cContext.acitiveContactS
+    const chatDetails = cContext.acitiveContact
     const chatboxRef = useRef();
     const settingRef = useRef();
     const [contactList, setUsersList] = useState([]);
     const AddUserRef = useRef();
-    const [SelectedUser, setSelectedUser] = useState([])
+    const [SelectedUser, setSelectedUser] = useState([]);
+
     const handleShowSettins = (e) => {
         settingRef.current.style.visibility = settingRef.current.style.visibility == 'visible' ? 'hidden' : 'visible'
     }
@@ -44,6 +46,14 @@ function Chat() {
         await CommonAPI_POST({ url, params: SelectedUser })
     }, [SelectedUser])
 
+    const editUser = async()=>{
+      const primaryUserID = localStorage.getItem('uID');
+      const url = `http://127.0.0.1:5002/userDetails/${primaryUserID}`
+      const getUserDetails =  await CommonAPI_GET({ url });
+      console.log(getUserDetails,'getUserDetails')
+      
+    }
+
     return (
         <div className='chatMainContainer'>
             <div className='flex'>
@@ -51,7 +61,7 @@ function Chat() {
                     <img src={menu} className='menuIcon' onClick={handleShowSettins} />
                 </div>
                 <div className='settings' ref={settingRef}>
-                    <div className='induvidualIcon gap10'>
+                    <div className='induvidualIcon gap10' onClick={editUser}>
                         <img className='settingIcon' src={user}></img>
                         <span>Edit Profile</span>
                     </div>
@@ -63,6 +73,21 @@ function Chat() {
                         <img className='settingIcon' src={logout}></img>
                         <span>Logout</span>
                     </div>
+                </div>
+                <div className='editSettings'>
+                    <div>
+                        <div> <input type='file' className='fileUpload'/></div>
+                    </div>
+                     <div className="inputDiv">
+                                                <div className='textFieldIcon'><FaRegUser /></div>
+                                                <input
+                                                    type="text"
+                                                    className="textField"
+                                                    placeholder="Name"
+                                                    name="username"
+                                                    // onChange={handleChange}
+                                                />
+                                            </div>
                 </div>
             </div>
             <div className='addUserContainer' ref={AddUserRef}>

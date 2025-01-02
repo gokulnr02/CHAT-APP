@@ -35,6 +35,22 @@ exports.usersList = async (request, response) => {
     }
 }
 
+
+exports.userDetails = async (request, response) => {
+    try {
+        const primaryUser = request.params.id
+        await UserRegisterModel.find({ _id: primaryUser }).then((res) => {
+            if (res.length > 0) {
+                return response.status(200).json({ "status": 200, "message": "Success", "data": res })
+            } else {
+                return response.status(200).json({ "status": 200, "message": "No Records", "data": res })
+            }
+        })
+    } catch (err) {
+        return response.status(400).json({ "status": 400, "message": err.message })
+}
+}
+
 exports.login = async (request, response) => {
     try {
         const data = request.body
@@ -86,8 +102,9 @@ exports.Fav = async(request,response)=>{
         await addedUsers.find({members:{$in:primaryUser}},{__v:0}).then( async res=>{
           console.log(res,'PRIMARY')
            const result = await Promise.all(res.map(async(val)=>{
+                const id = val.members.flatMap(uID => uID != primaryUser ? uID:[]).toString()
                  return await UserRegisterModel.aggregate([
-                    {$match:{_id: new mongoose.Types.ObjectId(val.members[1])}},
+                    {$match:{_id: new mongoose.Types.ObjectId(id)}},
                     {
                         $addFields: {
                           fav: "$username" ,
