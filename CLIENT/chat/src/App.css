@@ -422,11 +422,11 @@ background-color: azure;
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100vh;
-  display: flex;
+  /* height: 100vh; */
+  /* display: flex;
  flex-direction: row;
  justify-content: center;
-  position: relative;
+  position: relative; */
 }
 
 .leftSideMain{
@@ -437,7 +437,6 @@ background-color: azure;
 }
 .rightSide{
   width: 100%;
-  background-color: aliceblue;
 }
 .rightSideMain{
   width: 100%;
@@ -489,13 +488,16 @@ background-color: azure;
   height: 40px;
   border-radius: 50%;
 }
-/* .contactList{
-  padding: 12px;
-} */
+.contactList{
+  width: 365px;
+  background-color: #fff;
+  height: calc(100vh - 65px);
+}
 
 .contactName{
   color: #011627;
   font-size: 16px;
+  cursor: pointer;
 }
 
 .contactNameDiv{
@@ -508,4 +510,23 @@ background-color: azure;
 .LastMessage1{
   color: #707991;
   font-size: 14px;
+}
+
+.topViewChat{
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.contactListFav{
+  width: 100%;
+  height: calc(100vh - 60px);
+  background-image: url('./assets/main/Chats.svg');
+}
+.leftContactList{
+  width: 100%;
+  border-right: 1px solid #ddd;
+}
+.contactListContainer{
+  background-color: #69e0bd;
 }
