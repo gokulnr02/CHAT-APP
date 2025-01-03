@@ -12,5 +12,7 @@ route.post('/Adduser',userRegister.Adduser)
 route.post('/fav',userRegister.Fav);
 route.post('/sendMessage',userRegister.sendMessage)
 route.get('/messages/:chatId',userRegister.Messages)
+route.get('/chat/:primaryUser',userRegister.chat)
+
 
 module.exports =route;

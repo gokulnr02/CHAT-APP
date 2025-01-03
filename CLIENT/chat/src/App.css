@@ -283,18 +283,25 @@ background-color: azure;
 }
 
 .sendArrow{
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  position: relative;
+    right: 40px;
+    /* top: 10px; */
+    width: 40px;
+    height: 39px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
 }
-
+.react-input-emoji--button {
+  left: -50px;
+}
+.react-input-emoji--input {
+width: 95% !important;
+}
 .navbar{
   position: relative;
 }
@@ -491,7 +498,12 @@ background-color: azure;
 .contactList{
   width: 365px;
   background-color: #fff;
-  height: calc(100vh - 65px);
+  height: calc(100vh - 60px);
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  overflow-x: hidden;
+  scrollbar-width: 1px;
+  scroll-behavior: smooth;
 }
 
 .contactName{
@@ -522,6 +534,7 @@ background-color: azure;
   width: 100%;
   height: calc(100vh - 60px);
   background-image: url('./assets/main/Chats.svg');
+  display: flex;
 }
 .leftContactList{
   width: 100%;
@@ -529,4 +542,54 @@ background-color: azure;
 }
 .contactListContainer{
   background-color: #69e0bd;
+}
+.chatBOX{
+  width: 915px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.chatBoxfooter{
+  width: 600px;
+  /* background-color: #fff; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.sender{
+  background-color: #78E378;
+  margin: 10px;
+  /* width: 100%; */
+  padding: 4px 8px ;
+  font-size: 13px;
+  border-radius: 5px;
+  width: 100%;
+  text-align: right;
+ 
+}
+.reciver{
+  background-color: #F5F5F5;
+  margin: 10px;
+  padding: 4px 8px ;
+  font-size: 13px;
+  border-radius: 5px;
+  width: 100%;
+  text-align: left
+}
+
+.message{
+  margin: 10px;
+  width: 800px;
+}
+
+.messageBox{
+  width: 100%;
+}
+.chatBoxheader{
+  height: 80vh;
 }

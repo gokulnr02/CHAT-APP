@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import menuIcon from '../assets/main/Menu Icon.png'
 import Chats from '../assets/main/Chats.svg'
-import CommonAPI_POST from '../CommonAPI'
+import CommonAPI_GET from './CommonAPI_GET';
+import Chatbox from './Chatbox';
 
 export default function Maincomponent() {
 
-  const [contactList, setcontactList] = useState([])
+  const [contactList, setcontactList] = useState([]);
+  const [selectedContact, setSelectedContact] = useState(null);
+  
   useEffect(() => {
     async function fetchFavList() {
       try {
-        const url = `http://127.0.0.1:5002/fav`;
-        const favList = await CommonAPI_POST({
+        const url = `http://127.0.0.1:5002/chat/${localStorage.getItem('uID')}`;
+        const favList = await CommonAPI_GET({
           url,
           params: { _id: localStorage.getItem('uID') }
         });
@@ -23,6 +26,11 @@ export default function Maincomponent() {
     fetchFavList();
   }, []);
 
+  const handleSelectMessages = (x) => {
+    console.log(x, 'x')
+    setSelectedContact(x)
+  }
+
   return (
     <div className='Maincomponent'>
       <div className='topViewChat'>
@@ -33,35 +41,37 @@ export default function Maincomponent() {
           </div>
         </div>
 
-        <div className='rightSide'>
+        {selectedContact &&<div className='rightSide'>
           <div className='rightSideMain'>
             <div className='IndividualContact1'>
-              <img src='' className='contactListIcon1' />
+              <img src='https://avatar.iran.liara.run/public/boy' className='contactListIcon1' />
               <div className='contactNameDiv'>
-                <p className='contactName' data-name='Gokul'> Gokul</p>
+                <p className='contactName' data-name='Gokul'> {selectedContact.userDetails.fav}</p>
                 <p className='LastMessage1'>Chatgram Web was updated.</p>
               </div>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
       <div className='contactListFav'>
         {/* Contact List  */}
         <div className='contactList'>
           {
-            contactList.length > 0 && contactList.map((x) => {
+            contactList.length > 0 && contactList.map((x,i) => {
+            const LastMessage =   x.messages.length > 0 ? x.messages[x.messages.length - 1].message :'';
               return (
-                <di v className='IndividualContact' >
-                  <img src='' className='contactListIcon' />
+                <div className='IndividualContact' onClick={() => { handleSelectMessages({...x,profile:`https://avatar.iran.liara.run/public/${i}`}) }}>
+                  <img src={`https://avatar.iran.liara.run/public/${i}`} className='contactListIcon' />
                   <div className='contactNameDiv'>
-                    <p className='contactName' data-name='Gokul'> {x.fav}</p>
-                    <p className='LastMessage1'>Chatgram Web was updated.</p>
+                    <p className='contactName' data-name='Gokul'> {x.userDetails.fav}</p>
+                    <p className='LastMessage1'>{LastMessage}</p>
                   </div>
-                </di>
+                </div>
               )
             })
           }
         </div>
+      { selectedContact && <Chatbox selectedContact={selectedContact} />}
       </div>
     </div>
   )

@@ -147,3 +147,70 @@ exports.Messages = async (request, response) => {
         return response.status(400).json({ "status": 400, "message": err.message })
     }
 }
+
+exports.chat = async (request, response) => {
+    try {
+        const cId = request.params.primaryUser;
+
+        // Fetch chat details for the primary user
+        const chatDetails = await addedUsers.aggregate([
+            { $match: { members: { $in: [cId] } } },
+            {
+                $addFields: {
+                    chatId: '$_id',
+                    members: {
+                        $filter: {
+                            input: "$members",
+                            as: "member",
+                            cond: { $ne: ["$$member", cId] }
+                        }
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    reciverId: { $arrayElemAt: ["$members", 0] }
+                }
+            },
+            { $project: { __v: 0, updatedAt: 0, createdAt: 0, _id: 0, members: 0 } }
+        ]);
+
+        // Fetch additional details for each chat
+        const chat = await Promise.all(chatDetails.map(async (x) => {
+            const id = x.reciverId;
+
+            // Fetch receiver details
+            const userDetails = await UserRegisterModel.aggregate([
+                { $match: { _id: new mongoose.Types.ObjectId(id) } },
+                {
+                    $addFields: {
+                        fav: "$username",
+                        reciverId: '$_id',
+                        chatId: x.chatId
+                    }
+                },
+                { $project: { __v: 0, username: 0, _id: 0, password: 0, updatedAt: 0 ,createdAt:0} }
+            ]);
+
+            if (userDetails.length > 0) {
+                x.fav = userDetails[0].fav;
+                x.reciverId = userDetails[0].reciverId;
+                x.chatId = userDetails[0].chatId;
+            }
+
+            // Fetch messages for the chat
+            const messagesList = await messages.find({ chatId: x.chatId },{__v:0,chatId:0,_id:0,updatedAt:0});
+
+            return {
+                userDetails: userDetails[0] || null,
+                messages: messagesList || []
+            };
+        }));
+
+        return response.json({ status: 200, message: "Success", data: chat });
+    } catch (err) {
+        return response.status(400).json({ status: 400, message: err.message });
+    }
+};
+
+

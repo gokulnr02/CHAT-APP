@@ -13,7 +13,7 @@ server.use(express.urlencoded({extended:true}))
 server.use(express.json());
 server.use('/',routes);
 
-Mongoose.connect(process.env.MANGO_CLOUD_URI).then(()=>{console.log(`DB connected Successfully`)})
+Mongoose.connect(process.env.Mango_URI).then(()=>{console.log(`DB connected Successfully`)})
 
 server.listen(port,()=>{
     console.log(`Server run successfully in ${port}`)
