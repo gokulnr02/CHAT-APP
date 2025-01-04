@@ -9,12 +9,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 export const chatContext = createContext()
 
 function App() {
-const [acitiveContact,setActivecontact]=useState({})
+  const [acitiveContact, setActivecontact] = useState({});
+  const [selectedUsers, seteSelectedUsers] = useState(null)
+  console.log("🚀 ~ App ~ selectedUsers:", selectedUsers)
   return (
     <>
       <chatContext.Provider value={{
         acitiveContact,
-        AcitiveContact:(e)=>setActivecontact(e)
+        AcitiveContact: (e) => setActivecontact(e),
+        seteSelectedUsers: (e) => seteSelectedUsers(e),
+        selectedUsers
       }}>
         <Router>
           <Routes>

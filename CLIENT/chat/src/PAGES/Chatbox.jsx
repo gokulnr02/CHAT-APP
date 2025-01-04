@@ -34,7 +34,7 @@ function Chatbox(props) {
         {props.selectedContact.messages && props.selectedContact.messages.length > 0 && props.selectedContact.messages.map((message) => {
           return (
             <div className='messageBox'>
-              <div className='message' style={{ textAlign: message.senderId == uid ? 'right' : 'left' }}>
+              <div className='message' style={{ jus: message.senderId == uid ? 'right' : 'left' }}>
                 <span className={message.senderId == uid ? 'sender' : 'reciver'}>{message.message}</span>
               </div>
             </div>

@@ -46,12 +46,12 @@ function Chat() {
         await CommonAPI_POST({ url, params: SelectedUser })
     }, [SelectedUser])
 
-    const editUser = async()=>{
-      const primaryUserID = localStorage.getItem('uID');
-      const url = `http://127.0.0.1:5002/userDetails/${primaryUserID}`
-      const getUserDetails =  await CommonAPI_GET({ url });
-      console.log(getUserDetails,'getUserDetails')
-      
+    const editUser = async () => {
+        const primaryUserID = localStorage.getItem('uID');
+        const url = `http://127.0.0.1:5002/userDetails/${primaryUserID}`
+        const getUserDetails = await CommonAPI_GET({ url });
+        console.log(getUserDetails, 'getUserDetails')
+
     }
 
     return (
@@ -76,18 +76,18 @@ function Chat() {
                 </div>
                 <div className='editSettings'>
                     <div>
-                        <div> <input type='file' className='fileUpload'/></div>
+                        <div> <input type='file' className='fileUpload' /></div>
                     </div>
-                     <div className="inputDiv">
-                                                <div className='textFieldIcon'><FaRegUser /></div>
-                                                <input
-                                                    type="text"
-                                                    className="textField"
-                                                    placeholder="Name"
-                                                    name="username"
-                                                    // onChange={handleChange}
-                                                />
-                                            </div>
+                    <div className="inputDiv">
+                        <div className='textFieldIcon'><FaRegUser /></div>
+                        <input
+                            type="text"
+                            className="textField"
+                            placeholder="Name"
+                            name="username"
+                        // onChange={handleChange}
+                        />
+                    </div>
                 </div>
             </div>
             <div className='addUserContainer' ref={AddUserRef}>
