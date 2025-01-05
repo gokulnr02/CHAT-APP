@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState, useContext } from 'react'
 import menuIcon from '../assets/main/Menu Icon.png'
 import Chats from '../assets/main/Chats.svg'
+import profile from '../assets/main/gokul.jpeg'
 import CommonAPI_GET from './CommonAPI_GET';
 import Chatbox from './Chatbox';
 import { IoSettingsOutline } from "react-icons/io5";
@@ -10,34 +11,15 @@ import { HiOutlineMenu } from "react-icons/hi";
 import CommonAPI_POST from '../CommonAPI';
 import { config } from '../config';
 import { chatContext } from '../App';
+import { IoIosLogOut } from "react-icons/io";
 
 export default function Maincomponent() {
 
-  const [contactList, setcontactList] = useState([]);
-  const [selectedContact, setSelectedContact] = useState(null);
   const [menuName, setMenuName] = useState('chat');
   const [favlist, setfavList] = useState([]);
 
 
   const cContext = useContext(chatContext);
-  console.log(cContext.selectedUsers, 'selectedUsers')
-
-  useEffect(() => {
-    async function getChat() {
-      try {
-        const url = `${config.Api}chat/${localStorage.getItem('uID')}`;
-        const favList = await CommonAPI_GET({
-          url,
-          params: { _id: localStorage.getItem('uID') }
-        });
-        setcontactList(favList.data);
-      } catch (error) {
-        console.error("Error fetching favorite list:", error);
-      }
-    }
-
-    getChat();
-  }, []);
 
   const addUsers = useCallback(async () => {
     const url = `${config.Api}users/${localStorage.getItem('uID')}`;
@@ -49,23 +31,21 @@ export default function Maincomponent() {
   }, [])
 
   const handleSelectMessages = (x) => {
-    cContext.seteSelectedUsers(x.userDetails)
-    setSelectedContact(x)
+    cContext.setSelectedUsers(x.userDetails);
   }
 
   const submitAddUser = useCallback(async (secondaryId) => {
     const url = `${config.Api}Adduser`
-    // await CommonAPI_POST({ url, params: SelectedUser })
   }, [])
 
   const hanldeSelectedUser = async (user) => {
-    cContext.seteSelectedUsers(user);
+    cContext.setSelectedUsers(user);
   }
 
   function lastMessageTrim(text) {
     return text && text.length > 10 ? text.slice(0, 20) + '...' : text;
   }
- 
+
   return (
     <div className='Maincomponent'>
       <div className='topViewChat'>
@@ -75,12 +55,12 @@ export default function Maincomponent() {
           <div className='searchDiv'><input type='text' placeholder='search' style={{ paddingLeft: '15px' }} /></div>
         </div>
 
-        <div className='rightSide' style={{ width: selectedContact ? '75%' : '70%' }}>
-          {selectedContact && <div className='rightSideMain'>
+        <div className='rightSide' style={{ width: cContext.selectedUsers ? '75%' : '70%' }}>
+          {cContext.selectedUsers && <div className='rightSideMain'>
             <div className='IndividualContact1'>
-              <img src='https://avatar.iran.liara.run/public/boy' className='contactListIcon1' />
+              <img src={profile} className='contactListIcon1' />
               <div className='contactNameDiv'>
-                <p className='contactName' data-name='Gokul'> {selectedContact.userDetails.fav}</p>
+                <p className='contactName' data-name='Gokul'> {cContext.selectedUsers.fav}</p>
                 <p className='LastMessage1'>Chatgram Web was updated.</p>
               </div>
             </div>
@@ -96,22 +76,22 @@ export default function Maincomponent() {
           </div>
           <div className='navBottom'>
             <div className='addUserDetails'><IoSettingsOutline className='contactListIcon2' onClick={() => { setMenuName('settings') }} /></div>
-            <div className='addUserDetails'><img src='https://avatar.iran.liara.run/public/boy' className='contactListIcon1' onClick={() => { setMenuName('profile') }} /></div>
+            <div className='addUserDetails'><img src={profile} className='contactListIcon1' onClick={() => { setMenuName('profile') }} /></div>
           </div>
         </div>
         <div className='contactList'>
 
           {
-            menuName == 'chat' && contactList.length > 0 && contactList.map((x, i) => {
+            menuName == 'chat' && cContext.contactList && cContext.contactList.data && cContext.contactList.data.length > 0 && cContext.contactList.data.map((x, i) => {
               const LastMessage = x.messages && x.messages.length > 0
-              ? lastMessageTrim(x.messages[x.messages.length - 1].message)
-              : '';
+                ? lastMessageTrim(x.messages[x.messages.length - 1].message)
+                : '';
               return (
                 <div className='IndividualContact' onClick={() => { handleSelectMessages({ ...x, profile: `https://avatar.iran.liara.run/public/${i}` }) }}>
-                  <img src={`https://avatar.iran.liara.run/public/${i}`} className='contactListIcon' />
+                  <img src={profile} className='contactListIcon' />
                   <div className='contactNameDiv'>
-                    <p className='contactName' data-name={x.userDetails.fav}> {x.userDetails.fav}</p>
-                    <p className='LastMessage1'>{ LastMessage}</p>
+                    <p className='contactName' data-name={x.userDetails?.fav}> {x.userDetails?.fav}</p>
+                    <p className='LastMessage1'>{LastMessage}</p>
                   </div>
                 </div>
               )
@@ -121,17 +101,26 @@ export default function Maincomponent() {
             menuName == 'addUser' && favlist.length > 0 && favlist.map((x, i) => {
               return (
                 <div className='IndividualContact' onClick={() => { hanldeSelectedUser(x) }}>
-                  <img src={`https://avatar.iran.liara.run/public/${i}`} className='contactListIcon' />
+                  <img src={profile} className='contactListIcon' />
                   <div className='contactNameDiv2'>
-                    <p className='contactName' data-name={x.username}> {x.username}</p>
+                    <p className='contactName' data-name={x.fav}> {x.fav}</p>
                     <div className='selectAddUser'></div>
                   </div>
                 </div>
               )
             })
           }
+          {
+            menuName == 'profile' && <div className='SettingDiv'>
+              <div className='profileDiv'>
+                <img src={profile} className='profileImg' />
+                <p className='profileName'>gokul</p>
+              </div>
+              <div className='logoutDiv' onClick={() => { window.location.href = '/login' }}><IoIosLogOut className='contactListIcon3' /> <span>Logout</span></div>
+            </div>
+          }
         </div>
-        {selectedContact && <Chatbox selectedContact={selectedContact} submitAddUser={submitAddUser} />}
+        {cContext.selectedUsers && <Chatbox submitAddUser={submitAddUser} />}
       </div>
     </div>
   )

@@ -41,6 +41,8 @@ export default function Login1() {
             alert(result.message)
             if (!ViewSignUp && result.status == 200) {
                 localStorage.setItem('uID', result.data.res._id)
+                localStorage.setItem('username', result.data.res.username)
+                
                 window.location.href = '/inbox'
             }
         } catch (error) {

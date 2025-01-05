@@ -20,20 +20,53 @@ exports.userSave = async (request, response) => {
     }
 }
 
+
 exports.usersList = async (request, response) => {
     try {
-        const primaryUser = request.params.id
-        await UserRegisterModel.find({ _id: { $ne: primaryUser } }).then((res) => {
-            if (res.length > 0) {
-                return response.status(200).json({ "status": 200, "message": "Success", "data": res })
-            } else {
-                return response.status(200).json({ "status": 200, "message": "No Records", "data": res })
-            }
-        })
+        const primaryUser = request.params.id;
+
+        // Validate primaryUser
+        if (!mongoose.Types.ObjectId.isValid(primaryUser)) {
+            return response.status(400).json({ status: 400, message: "Invalid primaryUser ID" });
+        }
+
+        // Fetch chat list
+        const chatList = await addedUsers.find({}, { __v: 0, createdAt: 0, updatedAt: 0, _id: 0 });
+
+        // Extract and filter unique members
+        const allMembers = chatList
+            .map((item) => item.members || [])
+            .flat()
+            .filter((id) => id !== primaryUser); // Exclude primaryUser ID
+
+        const uniqueIDs = [...new Set(allMembers)]; // Remove duplicates
+
+        console.log(uniqueIDs, 'uniqueIDs');
+
+        // Fetch users excluding the primary user
+        const allUsers = await UserRegisterModel.aggregate([
+            { $match: { _id: { $in: uniqueIDs.map((id) => new mongoose.Types.ObjectId(id)) } } },
+            {
+                $addFields: { fav: "$username", receiverId: "$_id" },
+            },
+            {
+                $project: { username: 0, password: 0, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 },
+            },
+        ]);
+
+        if (allUsers.length > 0) {
+            return response.status(200).json({ status: 200, message: "Success", data: allUsers });
+        } else {
+            return response.status(200).json({ status: 200, message: "No Records", data: [] });
+        }
     } catch (err) {
-        return response.status(400).json({ "status": 400, "message": err.message })
+        // Handle errors
+        return response.status(400).json({ status: 400, message: err.message });
     }
-}
+};
+
+
+
 
 
 exports.userDetails = async (request, response) => {
@@ -85,12 +118,15 @@ exports.Adduser = async (request, response) => {
                 members: { $all: [primaryUser, selectdUser] }
             })
             if (!ifExisiting) {
-                result = await addedUsers.create({ members: [primaryUser, selectdUser] });
-                console.log(result,'savedRes')
+                result = await addedUsers.create({ members: [primaryUser, selectdUser] })
+                .then(res=>{
+                    return response.status(200).json({ "status": 200, "message": "Saved Successfully", "data":res })
+                })
+            }else{
+                return response.status(200).json({ "status": 200, "message": "User Already Created", "data":[] })
             }
         })
 
-        return response.status(200).json({ "status": 200, "message": "Saved Successfully", "data": { result } })
     } catch (err) {
         return response.status(400).json({ "status": 400, "message": err.message })
     }

@@ -1,45 +1,69 @@
-import React, { useState,useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import InputEmoji from "react-input-emoji";
 import send from '../assets/send.png'
 import CommonAPI_POST from '../CommonAPI';
 import { config } from '../config';
+import { chatContext } from '../App';
 
 function Chatbox(props) {
-  console.log(props)
+
   const [text, setText] = useState("");
-  console.log(text,'text')
-  const uid = localStorage.getItem('uID'); 
+  const uid = localStorage.getItem('uID');
+  const cContext = useContext(chatContext);
 
   function handleOnEnter(text) {
     console.log("enter", text);
   }
 
   const sendMessage = useCallback(async () => {
-    if (!props.selectedContact.userDetails || !text.trim()) return; // Add validation
+    if (!text.trim()) return;
+    const data = await cContext.contactList.data
+    const selectdUser = await cContext.selectedUsers.reciverId
+
+    const userList = await data.filter(x => x.userDetails && x.userDetails.reciverId == selectdUser)
+    let chatID = userList[0]?.userDetails?.chatId
+
+    if (!chatID) {
+      console.log('new Chat created')
+      chatID = await createChat(cContext.selectedUsers.reciverId)
+    }
+
     const sendURL = `${config.Api}sendMessage`;
     const message = {
-      chatId: props.selectedContact.userDetails.chatId,
-      senderId: localStorage.getItem('uID'),
+      chatId: chatID,
+      senderId: uid,
       message: text.trim(),
     };
     try {
       await CommonAPI_POST({ url: sendURL, params: message });
+      setText('')
     } catch (error) {
       console.error('Error sending message:', error);
     }
-  }, [props.selectedContact.userDetails, text]);
+  }, [text]);
+
+  const createChat = useCallback(async (id) => {
+    const url = `${config.Api}Adduser`;
+    const result = await CommonAPI_POST({ url, params: [{ primaryUser: uid, selectdUser: id }] })
+    return result.data._id
+  }, [])
+
+  const chat = cContext.contactList.data.filter(x => x.userDetails?.chatId == cContext.selectedUsers.chatId)[0]
+
   return (
     <div className='chatBOX'>
       <div className='chatBoxheader'>
-        {props.selectedContact.messages && props.selectedContact.messages.length > 0 && props.selectedContact.messages.map((message) => {
-          return (
-            <div className='messageBox'>
-              <div className='message' style={{ jus: message.senderId == uid ? 'right' : 'left' }}>
-                <span className={message.senderId == uid ? 'sender' : 'reciver'}>{message.message}</span>
+        <div>
+          {chat && chat.messages && chat.messages.length > 0 && chat.messages.map((message) => {
+            return (
+              <div className='messageBox'>
+                <div className='message' style={{ justifyContent: message.senderId == uid ? 'right' : 'left' }}>
+                  <div className={message.senderId == uid ? 'sender' : 'reciver'}>{message.message}</div>
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
       <div className='chatBoxfooter'>
         <InputEmoji
@@ -50,7 +74,7 @@ function Chatbox(props) {
           placeholder="Type a message"
         />
         <div className='sendbutton'>
-           <button className='sendArrow' onClick={()=>{sendMessage()}}><img src={send} style={{ width: '25x', height: '25px' }} /></button>
+          <button className='sendArrow' onClick={() => { sendMessage() }}><img src={send} style={{ width: '25x', height: '25px' }} /></button>
         </div>
       </div>
     </div>
