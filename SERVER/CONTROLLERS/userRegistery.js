@@ -25,34 +25,34 @@ exports.usersList = async (request, response) => {
     try {
         const primaryUser = request.params.id;
 
-        // Validate primaryUser
-        if (!mongoose.Types.ObjectId.isValid(primaryUser)) {
-            return response.status(400).json({ status: 400, message: "Invalid primaryUser ID" });
-        }
-
-        // Fetch chat list
         const chatList = await addedUsers.find({}, { __v: 0, createdAt: 0, updatedAt: 0, _id: 0 });
 
-        // Extract and filter unique members
         const allMembers = chatList
             .map((item) => item.members || [])
             .flat()
-            .filter((id) => id !== primaryUser); // Exclude primaryUser ID
+            .filter((id) => id !== primaryUser);
 
-        const uniqueIDs = [...new Set(allMembers)]; // Remove duplicates
+        console.log(allMembers,'allMembers')
 
-        console.log(uniqueIDs, 'uniqueIDs');
+        const uniqueIDs = [...new Set(allMembers), primaryUser];
 
-        // Fetch users excluding the primary user
-        const allUsers = await UserRegisterModel.aggregate([
-            { $match: { _id: { $in: uniqueIDs.map((id) => new mongoose.Types.ObjectId(id)) } } },
-            {
-                $addFields: { fav: "$username", receiverId: "$_id" },
-            },
+        console.log([uniqueIDs.map(id => id)].flat(), 'uniqueIDs');
+
+
+        const aggreGate = [];
+        if (uniqueIDs.length > 0) {
+            aggreGate.push({ $match: { _id: { $nin: uniqueIDs.map(id => new mongoose.Types.ObjectId(id)) } } })
+        } else {
+            aggreGate.push({ $match: { _id: { $ne: new mongoose.Types.ObjectId(primaryUser) } } })
+        }
+
+        aggreGate.push({
+            $addFields: { fav: "$username", reciverId: "$_id" },
+        },
             {
                 $project: { username: 0, password: 0, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 },
-            },
-        ]);
+            },)
+        const allUsers = await UserRegisterModel.aggregate(aggreGate);
 
         if (allUsers.length > 0) {
             return response.status(200).json({ status: 200, message: "Success", data: allUsers });
@@ -60,7 +60,6 @@ exports.usersList = async (request, response) => {
             return response.status(200).json({ status: 200, message: "No Records", data: [] });
         }
     } catch (err) {
-        // Handle errors
         return response.status(400).json({ status: 400, message: err.message });
     }
 };

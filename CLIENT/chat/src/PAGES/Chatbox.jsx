@@ -1,46 +1,77 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext,useEffect } from 'react';
 import InputEmoji from "react-input-emoji";
 import send from '../assets/send.png'
 import CommonAPI_POST from '../CommonAPI';
 import { config } from '../config';
 import { chatContext } from '../App';
+import io from 'socket.io-client';
 
 function Chatbox(props) {
 
-  const [text, setText] = useState("");
-  const uid = localStorage.getItem('uID');
-  const cContext = useContext(chatContext);
-
+  const [socket, setSocket] = useState(null);
+  const [text, setText] = useState('');
   function handleOnEnter(text) {
     console.log("enter", text);
   }
+  const cContext = useContext(chatContext);
+  const uid = localStorage.getItem('uID');
+  const SOCKET_SERVER_URL = 'http://localhost:5002';
+
+  useEffect(() => {
+    const socketInstance = io(SOCKET_SERVER_URL, {
+      query: {
+        username: localStorage.getItem('username'),
+        primeId: uid,
+      },
+    });
+    setSocket(socketInstance);
+
+    return () => {
+      if (socketInstance) {
+        socketInstance.disconnect();
+      }
+    };
+  }, [uid]);
 
   const sendMessage = useCallback(async () => {
     if (!text.trim()) return;
-    const data = await cContext.contactList.data
-    const selectdUser = await cContext.selectedUsers.reciverId
 
-    const userList = await data.filter(x => x.userDetails && x.userDetails.reciverId == selectdUser)
-    let chatID = userList[0]?.userDetails?.chatId
-
-    if (!chatID) {
-      console.log('new Chat created')
-      chatID = await createChat(cContext.selectedUsers.reciverId)
-    }
-
-    const sendURL = `${config.Api}sendMessage`;
-    const message = {
-      chatId: chatID,
-      senderId: uid,
-      message: text.trim(),
-    };
     try {
-      await CommonAPI_POST({ url: sendURL, params: message });
-      setText('')
+      const data = cContext?.contactList?.data || [];
+      const selectedUserId = cContext?.selectedUsers?.reciverId;
+
+      if (!selectedUserId) {
+        console.error('No recipient selected');
+        return;
+      }
+
+      const userList = data.filter(
+        (x) => x.userDetails && x.userDetails.reciverId === selectedUserId
+      );
+
+      let chatID = userList[0]?.userDetails?.chatId;
+
+      if (!chatID) {
+        console.log('Creating a new chat');
+        chatID = await createChat(selectedUserId);
+      }
+
+      const message = {
+        chatId: chatID,
+        senderId: uid,
+        message: text.trim(),
+      };
+
+      if (socket) {
+        socket.emit('sendMessage', message);
+        setText('');
+      } else {
+        console.error('Socket is not connected');
+      }
     } catch (error) {
       console.error('Error sending message:', error);
     }
-  }, [text]);
+  }, [text, socket, cContext, uid]);
 
   const createChat = useCallback(async (id) => {
     const url = `${config.Api}Adduser`;

@@ -43,10 +43,10 @@ export default function Login1() {
                 localStorage.setItem('uID', result.data.res._id)
                 localStorage.setItem('username', result.data.res.username)
                 
-                window.location.href = '/inbox'
+                window.location.href = '/chat'
             }
         } catch (error) {
-            console.error('Error:', error); // Handle errors appropriately
+            console.error('Error:', error);
         }
     }, [userDetails]);
 

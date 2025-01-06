@@ -5,6 +5,7 @@ import Maincomponent from './PAGES/Maincomponent';
 import { useState, createContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { io } from 'socket.io-client';
+import CommonAPI_GET from './PAGES/CommonAPI_GET';
 
 export const chatContext = createContext();
 
@@ -22,7 +23,7 @@ function App() {
       },
     });
 
-    socket.on('chat message', (msg) => {
+    socket.on('getMessages', (msg) => {
       try {
         setContactList(JSON.parse(msg));
       } catch (error) {
@@ -34,6 +35,16 @@ function App() {
       socket.disconnect();
     };
   }, []);
+
+  useEffect(()=>{
+   async function userMessages(params) {
+    const url = `http://127.0.0.1:5002/chat/${localStorage.getItem('uID')}`;
+    const response = await CommonAPI_GET({url});
+    console.log(response,'response')
+    setContactList(response);
+   }
+    userMessages()
+  },[])
 
   console.log('🚀 ~ App ~ selectedUsers:', contactList);
 
@@ -51,7 +62,6 @@ function App() {
         <Router>
           <Routes>
             <Route path='/login' element={<Login1 />} />
-            <Route path='/inbox' element={<Chat />} />
             <Route path='/chat' element={<Maincomponent />} />
           </Routes>
         </Router>
