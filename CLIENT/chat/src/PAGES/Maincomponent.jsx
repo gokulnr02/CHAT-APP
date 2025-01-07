@@ -88,7 +88,6 @@ export default function Maincomponent() {
               const LastMessage = x.messages && x.messages.length > 0
                 ? lastMessageTrim(x.messages[x.messages.length - 1].message)
                 : '';
-                console.log(x,'x')
               return (
                 <div className='IndividualContact' onClick={() => { handleSelectMessages({ ...x, profile: `https://avatar.iran.liara.run/public/${i}` }) }}>
                   <img src={profile} className='contactListIcon' />

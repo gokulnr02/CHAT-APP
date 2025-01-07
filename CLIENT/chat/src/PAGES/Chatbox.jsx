@@ -59,6 +59,7 @@ function Chatbox(props) {
       const message = {
         chatId: chatID,
         senderId: uid,
+        reciverId:selectedUserId,
         message: text.trim(),
       };
 

@@ -25,7 +25,7 @@ function App() {
 
     socket.on('getMessages', (msg) => {
       try {
-        setContactList(JSON.parse(msg));
+        setContactList(msg);
       } catch (error) {
         console.error('Failed to parse chat message:', error);
       }
